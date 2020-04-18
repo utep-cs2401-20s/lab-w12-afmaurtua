@@ -1,43 +1,91 @@
 class myBinarySearchTreeNode{
-  int myValue;
+  int myValue; //whats its holding in the node
   myBinarySearchTreeNode left;
   myBinarySearchTreeNode right;
     
   myBinarySearchTreeNode(int inValue){
-    // created a new node with empty child pointers
+    inValue = myValue; // Saving the intager
 
   }
   
   myBinarySearchTreeNode(int[] A){
-    // creates a new Binary Search Tree rooted at the first value in the array
-    /// by inserting elements into the tree in the order they are given in A.
-
+    //Finding traversing through the array then finding the tree root and inserting the root
+    myValue = A[0];
+    for(int i =1; i < A.length; i++){
+      insert(A[i]);
+    }
   }
   
   public void insert(int inValue){
-    // This method takes a new integer as input and decides 
-    // if it should be place: 
-    //    * as the left child,
-    //    * as the right child, 
-    //    * in the left subtree,
-    //    * or in the right subtree.
-    // If the value already exists in the tree, no action is taken. 
-    
+    //Checking to see if the tree node is less then the value
+    if(inValue < myValue){
+      //if there isn't a node then it'll insert that value to the left
+      if(left != null){
+        left.insert(inValue);
+      }
+      //once it's inserted then saves the value
+      else{
+        left = new myBinarySearchTreeNode(inValue);
+    }
+      }
+    //otherwise it's going to the right side
+    else if(right != null) { //right
+      right.insert(inValue);
+    }else {
+      right = new myBinarySearchTreeNode(inValue);
+
+    }
+
   }
   
   public int height(){
-     // This method recursively calculates the height of the entire (sub)tree.
-     // This method will take O(n) time
-     return -1;
+    //Left and right are set to zero
+    int leftHeight = 0;
+    int rightHeight = 0;
+
+    //When the left side is not zero then its going to add up the number of edges in the  subtree
+    if(left != null){
+      leftHeight = left.height() +1;
+    }
+    //When the right side is not zero then its going to add up the number of edges in the  subtree
+    if(right != null){
+      rightHeight = right.height() +1;
+    }
+    //returning the height of the largest subtree
+     return Math.max(leftHeight,rightHeight);
   }
   
   public int depth(int search){
-     // This method recursively calculates the depth of a given search value. 
-     // If the given value is not in the tree, this method returns -1. 
-     // Note that if the tree is a proper BST, this method should complete in O(log n) time.
-     // Additionally, remember that the depth is the number of nodes on the path from a node to the root 
-     // (i.e. the number of the recursie calls).
+    // if there is no "Children" the it's just going to return zero
+    if(search == myValue){
+      return 0;
+    }
+    //Otherwise if the right side has "children" then it
+    else if(right != null && search > myValue){
+      return 1 + right.depth(search);
+    }
+    else if(left != null && search < myValue){
+      return 1 + left.depth(search);
+    }
+    //returning the depth of the tree
     return -1;
+  }
+
+  public int size(){
+    // This method recursively calculates the number of nodes in the (sub)tree.
+
+    //counter  set to zero
+    int sum = 0;
+    //counts each tree node to the right the adds
+    if(right != null){
+      sum ++;
+    }
+    //counts each tree node to the left the adds
+    else if(left != null){
+      sum++;
+    }
+    //returns the  size
+    return sum;
   }
   
   // Utility function included so you can debug your solution. 
